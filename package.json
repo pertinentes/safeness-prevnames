@@ -1,0 +1,8 @@
+{
+  "name": "safeness-prevnames",
+  "version": "1.0.0",
+  "description": "A lightweight Node.js client for interacting with an API that stores previous usernames of Discord users. Allows you to retrieve, save, delete, and count previous usernames.",
+  "main": "index.js",
+  "author": "pertinentes",
+  "license": "MIT"
+}
