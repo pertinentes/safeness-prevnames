@@ -4,5 +4,25 @@
   "description": "A lightweight Node.js client for interacting with an API that stores previous usernames of Discord users. Allows you to retrieve, save, delete, and count previous usernames.",
   "main": "index.js",
   "author": "pertinentes",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "discord",
+    "user",
+    "prevnames",
+    "safeness",
+    "discord prevnames",
+    "discord.js",
+    "discord.js-selfbot-v13",
+    "node.js",
+    "api",
+    "client",
+    "javascript",
+    "bots",
+    "selfbot",
+    "discord bot",
+    "discord user",
+    "discord username",
+    "previous usernames",
+    "usernames"
+   ]
 }
