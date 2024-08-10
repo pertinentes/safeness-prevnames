@@ -1,0 +1,9 @@
+{
+    "name": "prevnames",
+    "version": "1.0.0",
+    "description": "un module permettant d'intéragir avec une simple api de prevnames.",
+    "main": "index.js",
+    "author": "pertinentes",
+    "license": "MIT"
+  }
+  
