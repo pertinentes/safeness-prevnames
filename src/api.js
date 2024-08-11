@@ -53,16 +53,16 @@ class ApiClient {
     }
 
     async prevnames(userId) {
-        return await this.request(`/api/prevnames/${userId}`);
+        return await this.request(`/api/prevnames/users/${userId}`);
     }
 
     async save(user_id, username, name, changedAt) {
         const data = { user_id, username, name, changedAt };
-        return await this.request('/api/save', 'POST', data);
+        return await this.request('/api/prevnames/save', 'POST', data);
     }
 
     async clear(userId) {
-        return await this.request(`/api/clearprevnames/${userId}`);
+        return await this.request(`/api/prevnames/clear${userId}`);
     }
 
     async count() {
