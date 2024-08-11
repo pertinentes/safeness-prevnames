@@ -1,6 +1,6 @@
 # Safeness Prevnames Client
 
-The `safeness-prevnames` module is a lightweight Node.js client designed to interact with an API that stores previous usernames of Discord users. This client allows you to retrieve, save, delete, and count previous usernames through the API. It supports both HTTP and HTTPS connections and can be configured with an optional access key for secure requests.
+The `safeness-prevnames` module is a lightweight Node.js client designed to interact with an API that stores previous usernames of Discord users. This client allows you to retrieve, save, delete, count, and manage previous usernames both via an API and locally using SQLite. It supports both HTTP and HTTPS connections and can be configured with an optional access key for secure requests.
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm install safeness-prevnames
 
 ### Client Initialization
 
-To get started, you need to create an instance of the `Client` by specifying the base URL of your API. You can also provide an optional access key if your API requires authentication.
+To get started, create an instance of the `Client` by specifying the base URL of your API. You can also provide an optional access key if your API requires authentication.
 
 You can import the `Client` class directly or via the `Safeness` namespace:
 
@@ -40,6 +40,14 @@ const clientWithKey = new Client({ url: 'https://example.com', key: 'your-access
 const clientWithKey = new Safeness.Client({ url: 'https://example.com', key: 'your-access-key' }); 
 ```
 
+### Offline Mode
+
+The client can operate in offline mode using SQLite to store and manage previous usernames. To use this feature, simply initialize the client without specifying a URL or access key:
+
+```javascript
+const client = new Safeness.Client({ api: false });
+```
+
 ### Available Methods
 
 #### `prevnames(userId)`
@@ -58,19 +66,21 @@ async function getPrevnames() {
 }
 ```
 
-#### `save(user_id, username, name, changedAt)`
+#### `save(data)`
 
 Saves a new username for a given Discord user.
 
 ```javascript
 async function savePrevname() {
     try {
-        const userId = '123456789'; // a Discord user ID
-        const username = 'newUsername';
-        const name = 'newName';
-        const changedAt = new Date().toISOString();  // Date in ISO format
+        const data = {
+            user_id: '123456789',  // a Discord user ID
+            username: 'newUsername',
+            name: 'newName',
+            changedAt: new Date().toISOString()  // Date in ISO format
+        };
 
-        await client.save(userId, username, name, changedAt);
+        await client.save(data);
         console.log('Name saved successfully');
     } catch (error) {
         console.error('Error saving name:', error);
@@ -96,7 +106,7 @@ async function clearPrevnames() {
 
 #### `count()`
 
-Retrieves the total number of previous usernames stored in the database.
+Retrieves the total number of previous usernames stored.
 
 ```javascript
 async function getPrevnamesCount() {
@@ -109,7 +119,34 @@ async function getPrevnamesCount() {
 }
 ```
 
-## Usage Examples
+#### `clearDouble(userId)`
+
+Clears duplicate previous usernames for a given Discord user ID. If no user ID is provided, it clears duplicates for all users. If there are no previous usernames to clear, it simply logs a message.
+
+```javascript
+async function clearDuplicatePrevnames() {
+    try {
+        const userId = '123456789';  // Optional: a Discord user ID
+        await client.clearDouble(userId);
+        console.log('Duplicate prevnames cleared successfully');
+    } catch (error) {
+        console.error('Error clearing duplicate prevnames:', error);
+    }
+}
+```
+
+### Automated Duplicate Clearing
+
+The client can automatically clear duplicate previous usernames at startup and every 24 hours. This feature is available when the client is initialized without the API (`api: false`):
+
+```javascript
+const client = new Safeness.Client({ api: false });
+
+// The client will automatically clear duplicates at startup
+// and every 24 hours.
+```
+
+### Usage Examples
 
 Here is a complete example demonstrating how to use the various methods of the `prevnames` client:
 
@@ -129,7 +166,7 @@ const Safeness = require('safeness-prevnames');
         console.log('Prevnames:', prevNames);
         
         // Save a new username
-        await client.save(userId, 'newUsername', 'newName', new Date().toISOString());
+        await client.save({ user_id: userId, username: 'newUsername', name: 'newName', changedAt: new Date().toISOString() });
         console.log('Name saved successfully');
         
         // Delete previous usernames
@@ -139,6 +176,10 @@ const Safeness = require('safeness-prevnames');
         // Count the total number of previous usernames
         const count = await client.count();
         console.log(`Total number of prevnames: ${count}`);
+
+        // Clear duplicate prevnames
+        await client.clearDouble(userId);
+        console.log('Duplicate prevnames cleared successfully');
     } catch (error) {
         console.error('Error:', error);
     }
@@ -147,13 +188,15 @@ const Safeness = require('safeness-prevnames');
 
 ## Configuration
 
-- **`url`**: The base URL of the API to which the client should connect. This is a required parameter.
+- **`url`**: The base URL of the API to which the client should connect. This is a required parameter if `api` is set to `true`.
 - **`key`**: An optional access key to include in request headers for secured APIs.
+- **`api`**: Set to `false` to use the client in offline mode with SQLite.
 
 ## Warnings
 
 - Ensure that your API is properly configured to accept requests from this client.
 - The access key should be kept secret and should not be exposed in insecure environments.
+- Ensure the URL does not end with a trailing slash (`/`). The client will automatically correct this, but it's best practice to provide the correct format.
 
 ## License
 
