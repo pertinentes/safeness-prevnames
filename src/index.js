@@ -27,7 +27,7 @@ class Client {
     }
 
     initDb() {
-        const dbPath = path.resolve(__dirname, 'safeness.db');
+        const dbPath = path.resolve('./safeness.db');
 
         if (fs.existsSync(dbPath)) {
             this.db = new sqlite3.Database(dbPath, (err) => {

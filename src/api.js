@@ -31,8 +31,6 @@ class ApiClient {
                 let rawData = '';
                 res.on('data', (chunk) => { rawData += chunk; });
                 res.on('end', () => {
-                    console.log('Response received:', rawData);
-
                     try {
                         const parsedData = JSON.parse(rawData);
                         resolve(parsedData);
