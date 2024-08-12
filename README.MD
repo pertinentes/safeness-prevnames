@@ -4,9 +4,14 @@ The `safeness-prevnames` module is a lightweight Node.js client designed to inte
 
 ## Important Links
 
+- **Discord Server:** Join our [Discord server](https://discord.gg/safeness) for help !
+
 - **npm Module:** [safeness-prevnames](https://www.npmjs.com/package/safeness-prevnames)
+
 - **Api Repository:** [safeness-api](https://github.com/pertinentes/safeness-api)
-- **Example Usage Repository:** [exemple-safeness](https://github.com/pertinentes/exemple-safeness)
+
+- **Example Usage Repository:** [exemple-safeness](https://github.com/pertinentes/safeness-exemple)
+
 - **Prevnames Bot Without Safeness Module :** [prevnames-bot](https://github.com/pertinentes/prevnames-bot)
 
 ## Installation
