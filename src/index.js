@@ -2,7 +2,7 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const ApiClient = require('./api');
-const { savePrevnames, getPrevnames, clearPrevnames, countPrevnames, clearDouble } = require('./fonctions');
+const { save, prevnames, clear, count, clearDouble } = require('./fonctions');
 
 class Client {
     constructor({ api = false, url = '', key = '' }) {
@@ -32,18 +32,16 @@ class Client {
         if (fs.existsSync(dbPath)) {
             this.db = new sqlite3.Database(dbPath, (err) => {
                 if (err) {
-                    console.error('Failed to connect to the database:', err.message);
+                    return
                 } else {
-                    console.log('Connected to the existing SQLite database.');
                     this.clearDoubleAtStartup();
                 }
             });
         } else {
             this.db = new sqlite3.Database(dbPath, (err) => {
                 if (err) {
-                    console.error('Failed to create the database:', err.message);
+                    return;
                 } else {
-                    console.log('Created a new SQLite database.');
                     this.createTable();
                 }
             });
@@ -65,7 +63,7 @@ class Client {
             if (err) {
                 console.error('Failed to create table:', err.message);
             } else {
-                console.log('Table "Prevnames" is ready.');
+                console.log('Table "Safeness" is ready.');
             }
         });
     }
@@ -74,28 +72,28 @@ class Client {
         if (this.api) {
             return this.apiClient.save(data.user_id, data.username, data.name, data.changedAt);
         }
-        return savePrevnames(this, data);
+        return save(this, data);
     }
 
     prevnames(userId) {
         if (this.api) {
             return this.apiClient.prevnames(userId);
         }
-        return getPrevnames(this, userId);
+        return prevnames(this, userId);
     }
 
     clear(userId) {
         if (this.api) {
             return this.apiClient.clear(userId);
         }
-        return clearPrevnames(this, userId);
+        return clear(this, userId);
     }
 
     count() {
         if (this.api) {
             return this.apiClient.count();
         }
-        return countPrevnames(this);
+        return count(this);
     }
 
     clearDouble(userId) {
@@ -103,7 +101,7 @@ class Client {
             return this.apiClient.clearDouble(userId);
         }
 
-        return countPrevnames(this).then(count => {
+        return count(this).then(count => {
             if (count > 0) {
                 return clearDouble(this, userId);
             } else {
@@ -116,10 +114,10 @@ class Client {
     clearDoubleAtStartup() {
         this.clearDouble(null)
             .then(() => {
-                console.log("All duplicates cleared at startup.");
+                return;
             })
             .catch(err => {
-                console.error("Error clearing duplicates at startup:", err.message);
+                throw new Error("Error clearing duplicates at startup: " + err.message);
             });
     }
 

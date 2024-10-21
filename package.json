@@ -1,6 +1,6 @@
 {
   "name": "safeness-prevnames",
-  "version": "1.5.1",
+  "version": "1.5.4",
   "description": "A lightweight Node.js client for interacting with an API or SQLite database to store and manage previous usernames of Discord users. Supports retrieval, saving, deletion, counting, and duplicate management of previous usernames.",
   "main": "src/index.js",
   "author": "pertinentes",
@@ -14,21 +14,16 @@
     "discord.js",
     "discord.js-selfbot-v13",
     "node.js",
-    "api",
     "client",
-    "javascript",
     "bots",
     "selfbot",
     "discord bot",
     "discord user",
     "discord username",
-    "previous usernames",
-    "usernames",
-    "sqlite",
-    "offline mode",
-    "duplicate management"
+    "previous usernames"
   ],
   "dependencies": {
+    "got": "^10.5.0",
     "sqlite3": "^5.1.7"
   }
 }

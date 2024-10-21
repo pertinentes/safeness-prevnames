@@ -66,7 +66,13 @@ class ApiClient {
     }
 
     async count() {
-        return await this.request('/api/prevnames/count');
+        try {
+            const response = await this.request('/api/prevnames/count');
+            return response.count;
+        } catch (error) {
+            console.error('Error fetching count:', error);
+            throw error;
+        }
     }
 }
 

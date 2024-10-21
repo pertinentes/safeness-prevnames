@@ -1,7 +1,7 @@
-const Safeness = require('./src/index');
+const { Safeness } = require('./src/index');
 
 async function testWithApi() {
-    const prev = new Safeness.Client({ url: "", key: "", api: true });
+    const prev = new Safeness.Client({ url: "http://154.51.39.67:20005", key: "8219686b-b13f-4e58-8491-7072661d64dd", api: true });
     try {
         console.log('Testing with API...');
         const count = await prev.count();
@@ -31,6 +31,9 @@ async function testWithoutApi() {
 
         const countAfterClear = await prev.count();
         console.log('Total number of prevnames after clearing (without API):', countAfterClear);
+
+        await prev.clearDouble('1');
+        console.log('Duplicates cleared for user 1.');
 
     } catch (error) {
         console.error('Error (without API):', error.message);
